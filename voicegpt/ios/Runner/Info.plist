@@ -47,5 +47,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSSpeechRecognitionUsageDescription</key>
+<string>Speech Recognition is required</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>Microphone is required to record audio</string>
 </dict>
 </plist>
