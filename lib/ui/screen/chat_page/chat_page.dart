@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:voicegpt/model/text_chat.dart';
 import 'package:voicegpt/ui/screen/chat_page/widget/chat_bubble.dart';
-import 'package:voicegpt/ui/screen/chat_page/widget/input_chat.dart';
+import 'package:voicegpt/ui/comon/input_chat.dart';
 
 import '../../../bloc/chat/chat_bloc.dart';
 
@@ -12,10 +12,7 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPage extends State<ChatPage> {
-  List<TextChat> _chatList = [
-    TextChat(content: "dqwdqwd", isReceiver: true),
-    TextChat(content: "Hello", isReceiver: false),
-  ];
+  List<TextChat> _chatList = [];
 
   late ChatBloc _chatBloc;
   @override
@@ -45,6 +42,11 @@ class _ChatPage extends State<ChatPage> {
                   if (state is ReceiveUserInput) {
                     _chatList.add(TextChat(
                         content: state.userMessage, isReceiver: false));
+                  } else if (state is RespondSuccess) {
+                    _chatList.add(TextChat(
+                        content:
+                            state.respondMessage.choices[0].message.content,
+                        isReceiver: true));
                   }
                 },
                 builder: (context, state) {

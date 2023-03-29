@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../bloc/chat/chat_bloc.dart';
+import '../../bloc/chat/chat_bloc.dart';
 
 class InputChat extends StatefulWidget {
   @override
