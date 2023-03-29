@@ -1,7 +1,7 @@
 part of 'chat_bloc.dart';
 
 @immutable
-abstract class ChatEvent {
+abstract class ChatEvent extends Equatable {
   const ChatEvent();
 
   @override
@@ -13,4 +13,10 @@ class ChatMessageEvent extends ChatEvent {
   final String requestMessage;
 
   const ChatMessageEvent(this.requestMessage);
+}
+
+class ImageMessageEvent extends ChatEvent {
+  final String requestMessage;
+
+  const ImageMessageEvent(this.requestMessage);
 }

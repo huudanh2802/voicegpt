@@ -1,7 +1,7 @@
 part of 'chat_bloc.dart';
 
 @immutable
-abstract class ChatState {
+abstract class ChatState extends Equatable {
   const ChatState();
   @override
   List<Object> get props => [];
@@ -16,4 +16,13 @@ class ReceiveUserInput extends ChatState {
 
   @override
   List<Object> get props => [userMessage];
+}
+
+class RespondSuccess extends ChatState {
+  final ChatCTResponse respondMessage;
+
+  const RespondSuccess({required this.respondMessage});
+
+  @override
+  List<Object> get props => [respondMessage];
 }
