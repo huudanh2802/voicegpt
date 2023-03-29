@@ -132,3 +132,4 @@ app.*.symbols
 
 *.env
 .env
+.env
