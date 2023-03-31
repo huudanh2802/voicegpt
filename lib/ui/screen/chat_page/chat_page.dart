@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:voicegpt/model/text_chat.dart';
-import 'package:voicegpt/ui/screen/chat_page/widget/chat_bubble.dart';
-import 'package:voicegpt/ui/screen/chat_page/widget/input_chat.dart';
+import 'package:voicegpt/ui/widget/chat_bubble.dart';
+import 'package:voicegpt/ui/widget/input_chat.dart';
 
 import '../../../bloc/chat/chat_bloc.dart';
 

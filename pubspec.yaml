@@ -38,6 +38,10 @@ dependencies:
   flutter_bloc: ^8.1.2
   chat_gpt_sdk: ^2.0.6
   flutter_dotenv: ^5.0.2
+  equatable: ^2.0.5
+  speech_to_text: ^6.1.1
+  
+
 
 dev_dependencies:
   flutter_test:
