@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:holding_gesture/holding_gesture.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
-import 'package:voicegpt/bloc/speech/speech_bloc.dart';
 
 import '../../bloc/chat/chat_bloc.dart';
 
@@ -13,50 +13,43 @@ class InputChat extends StatefulWidget {
 
 class _InputChat extends State<InputChat> {
   late ChatBloc _chatBloc;
-  late SpeechBloc _speechBloc;
   final TextEditingController _sendMessageController = TextEditingController();
+  final TextEditingController _hintMessageController = TextEditingController();
 
   SpeechToText _speechToText = SpeechToText();
   bool _speechEnabled = false;
-  String _lastWords = '';
 
   /// This has to happen only once per app
   void _initSpeech() async {
-    if (_speechBloc.state.speechOn == false) {
+    if (_chatBloc.state.speechOn == false) {
       _speechEnabled = await _speechToText.initialize();
     } else {
-      _speechBloc.add(SpeechOnEvent());
+      _chatBloc.add(SpeechOnEvent());
     }
   }
 
-  /// Each time to start a speech recognition session
   void _startListening() async {
-    await _speechToText.listen(onResult: _onSpeechResult);
+    _chatBloc.add(StartListenEvent());
+    await _speechToText.listen(
+        onResult: _onSpeechResult,
+        partialResults: true,
+        listenFor: Duration(seconds: 100),
+        cancelOnError: false);
   }
 
-  /// Manually stop the active speech recognition session
-  /// Note that there are also timeouts that each platform enforces
-  /// and the SpeechToText plugin supports setting timeouts on the
-  /// listen method.
-  void _stopListening() async {
-    await _speechToText.stop();
-    setState(() {});
+  void _stopListening() {
+    _speechToText.cancel();
+    _chatBloc.add(StopListeningEvent());
   }
 
-  /// This is the callback that the SpeechToText plugin calls when
-  /// the platform returns recognized words.
   void _onSpeechResult(SpeechRecognitionResult result) {
-    // setState(() {
-    //   _lastWords = result.recognizedWords;
-    // });
-    _speechBloc.add(OnFinishListeningEvent(result.recognizedWords));
+    _chatBloc.add(ListeningEvent(result.recognizedWords));
   }
 
   @override
   void initState() {
     super.initState();
     _chatBloc = BlocProvider.of(context);
-    _speechBloc = BlocProvider.of<SpeechBloc>(context);
     _initSpeech();
   }
 
@@ -69,8 +62,18 @@ class _InputChat extends State<InputChat> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder(
+    return BlocConsumer(
         bloc: _chatBloc,
+        listener: (context, state) {
+          if (state is StartListenState) {
+            _hintMessageController.text = "Listening";
+          } else if (state is ListeningState) {
+            _hintMessageController.clear();
+            _sendMessageController.text = state.userMessage;
+          } else if (state is StopListeningState) {
+            _hintMessageController.clear();
+          }
+        },
         builder: (context, state) => Align(
             alignment: Alignment.bottomLeft,
             child: Container(
@@ -81,7 +84,7 @@ class _InputChat extends State<InputChat> {
                     style: TextStyle(color: Colors.white),
                     controller: _sendMessageController,
                     decoration: InputDecoration(
-                      hintText: "Write message...",
+                      hintText: _hintMessageController.text,
                       hintStyle: TextStyle(color: Colors.grey.shade300),
                       fillColor: Colors.grey.shade800,
                       filled: true,
@@ -101,12 +104,15 @@ class _InputChat extends State<InputChat> {
                     cursorColor: Colors.indigoAccent,
                   ),
                 ),
-                InkWell(
-                  onTap: () => {_startListening()},
-                  child: Icon(
-                    Icons.mic,
-                    color: Colors.indigoAccent,
-                    size: 30,
+                GestureDetector(
+                  onTapDown: (_) => _startListening(),
+                  onTapUp: (_) => _stopListening(),
+                  child: InkWell(
+                    child: Icon(
+                      Icons.mic,
+                      color: Colors.indigoAccent,
+                      size: 30,
+                    ),
                   ),
                 ),
                 const SizedBox(

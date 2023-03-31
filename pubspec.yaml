@@ -40,6 +40,7 @@ dependencies:
   flutter_dotenv: ^5.0.2
   equatable: ^2.0.5
   speech_to_text: ^6.1.1
+  holding_gesture: ^1.1.0
   
 
 
@@ -64,7 +65,8 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-
+  assets:
+  - .env
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

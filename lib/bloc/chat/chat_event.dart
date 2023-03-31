@@ -14,3 +14,24 @@ class ChatMessageEvent extends ChatEvent {
 
   const ChatMessageEvent(this.requestMessage);
 }
+
+class StartListenEvent extends ChatEvent {
+  const StartListenEvent();
+  @override
+  List<Object> get props => [];
+}
+
+class SpeechOnEvent extends ChatEvent {
+  const SpeechOnEvent();
+  @override
+  List<Object> get props => [];
+}
+
+class ListeningEvent extends ChatEvent {
+  const ListeningEvent(this.requestMessage);
+  final String requestMessage;
+}
+
+class StopListeningEvent extends ChatEvent {
+  const StopListeningEvent();
+}
