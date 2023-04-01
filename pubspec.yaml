@@ -41,6 +41,9 @@ dependencies:
   equatable: ^2.0.5
   speech_to_text: ^6.1.1
   holding_gesture: ^1.1.0
+  avatar_glow: ^2.0.2
+  breathing_collection: ^1.0.0+3
+  flutter_chat_ui: ^1.6.6
   
 
 

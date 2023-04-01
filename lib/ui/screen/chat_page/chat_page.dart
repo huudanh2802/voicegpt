@@ -12,7 +12,10 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPage extends State<ChatPage> {
-  List<TextChat> _chatList = [];
+  List<TextChat> _chatList = [
+    TextChat(content: "Hello", isReceiver: true),
+    TextChat(content: "Hello World", isReceiver: false)
+  ];
 
   late ChatBloc _chatBloc;
   @override
@@ -30,11 +33,6 @@ class _ChatPage extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text("OctoAssistant"),
-          backgroundColor: Colors.indigoAccent,
-        ),
         body: SafeArea(
             child: BlocConsumer<ChatBloc, ChatState>(
                 bloc: _chatBloc,
@@ -51,21 +49,20 @@ class _ChatPage extends State<ChatPage> {
                 },
                 builder: (context, state) {
                   return Container(
-                      color: Color.fromARGB(255, 7, 5, 5),
                       child: Column(
-                        children: [
-                          Expanded(
-                            child: ListView.builder(
-                              itemCount: _chatList.length,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return ChatBubble(textChat: _chatList[index]);
-                              },
-                            ),
-                          ),
-                          InputChat(),
-                        ],
-                      ));
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: _chatList.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return ChatBubble(textChat: _chatList[index]);
+                          },
+                        ),
+                      ),
+                      InputChat(),
+                    ],
+                  ));
                 })));
   }
 }

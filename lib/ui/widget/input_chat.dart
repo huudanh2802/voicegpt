@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:holding_gesture/holding_gesture.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
-
+import 'package:breathing_collection/breathing_collection.dart';
 import '../../bloc/chat/chat_bloc.dart';
 
 class InputChat extends StatefulWidget {
@@ -78,55 +78,69 @@ class _InputChat extends State<InputChat> {
             alignment: Alignment.bottomLeft,
             child: Container(
               padding: EdgeInsets.all(10),
-              child: Row(children: [
-                Expanded(
-                  child: TextFormField(
-                    style: TextStyle(color: Colors.white),
-                    controller: _sendMessageController,
-                    decoration: InputDecoration(
-                      hintText: _hintMessageController.text,
-                      hintStyle: TextStyle(color: Colors.grey.shade300),
-                      fillColor: Colors.grey.shade800,
-                      filled: true,
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          width: 1,
+              child: Center(
+                  child: Column(children: [
+                Row(children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: _sendMessageController,
+                      decoration: InputDecoration(
+                        hintText: _hintMessageController.text,
+                        //hintStyle: TextStyle(color: Colors.grey.shade300),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(30),
                         ),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          width: 1,
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(30),
                         ),
-                        borderRadius: BorderRadius.circular(30),
                       ),
+                      cursorColor: Colors.indigoAccent,
                     ),
-                    cursorColor: Colors.indigoAccent,
                   ),
-                ),
-                GestureDetector(
-                  onTapDown: (_) => _startListening(),
-                  onTapUp: (_) => _stopListening(),
-                  child: InkWell(
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  InkWell(
+                    onTap: () => {_sendMessageWithText()},
                     child: Icon(
-                      Icons.mic,
+                      Icons.send,
                       color: Colors.indigoAccent,
                       size: 30,
                     ),
-                  ),
-                ),
+                  )
+                ]),
+                //  GestureDetector(
+                //     onTapDown: (_) => _startListening(),
+                //     onTapUp: (_) => _stopListening(),
+                //     child: InkWell(
+                //       child: Icon(
+                //         Icons.mic,
+                //         color: Colors.indigoAccent,
+                //         size: 60,
+                //       ),
+                //     ),
+                //   ),
                 const SizedBox(
-                  width: 5,
+                  height: 10,
                 ),
-                InkWell(
-                  onTap: () => {_sendMessageWithText()},
-                  child: Icon(
-                    Icons.send,
-                    color: Colors.indigoAccent,
-                    size: 30,
-                  ),
-                )
-              ]),
+                BreathingGlowingButton(
+                  height: 60.0,
+                  width: 60.0,
+                  buttonBackgroundColor: Color(0xFF373A49),
+                  glowColor: Color(0xFF777AF9),
+                  icon: Icons.mic,
+                  iconColor: Colors.white,
+                  onTap: () {
+                    // do something
+                  },
+                ),
+              ])),
             )));
   }
 }

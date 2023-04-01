@@ -23,7 +23,7 @@ class _ChatBubble extends State<ChatBubble> {
             borderRadius: BorderRadius.circular(20),
             color: (widget.textChat.isReceiver == false
                 ? Colors.grey.shade200
-                : Colors.blue[200]),
+                : Colors.transparent),
           ),
           padding: EdgeInsets.all(16),
           child: Text(
