@@ -24,6 +24,19 @@ class SpeechInitial extends ChatState {
   const SpeechInitial();
 }
 
+class RespondingState extends ChatState {
+  const RespondingState();
+  @override
+  List<Object> get props => [];
+}
+
+class ErrorRespondState extends ChatState {
+  final String errorMessage;
+  const ErrorRespondState({required this.errorMessage});
+  @override
+  List<Object> get props => [];
+}
+
 class StartListenState extends ChatState {
   const StartListenState();
   @override

@@ -4,7 +4,8 @@ import 'package:holding_gesture/holding_gesture.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:breathing_collection/breathing_collection.dart';
-import '../../bloc/chat/chat_bloc.dart';
+
+import '../bloc/chat_bloc.dart';
 
 class InputChat extends StatefulWidget {
   @override
@@ -34,16 +35,18 @@ class _InputChat extends State<InputChat> {
         onResult: _onSpeechResult,
         partialResults: true,
         listenFor: Duration(seconds: 100),
-        cancelOnError: false);
+        pauseFor: Duration(seconds: 100),
+        cancelOnError: true);
   }
 
   void _stopListening() {
-    _speechToText.cancel();
     _chatBloc.add(StopListeningEvent());
+    _speechToText.cancel();
   }
 
   void _onSpeechResult(SpeechRecognitionResult result) {
     _chatBloc.add(ListeningEvent(result.recognizedWords));
+    if (_speechToText.isNotListening) _stopListening();
   }
 
   @override
@@ -86,7 +89,6 @@ class _InputChat extends State<InputChat> {
                       controller: _sendMessageController,
                       decoration: InputDecoration(
                         hintText: _hintMessageController.text,
-                        //hintStyle: TextStyle(color: Colors.grey.shade300),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                             width: 1,
@@ -98,6 +100,10 @@ class _InputChat extends State<InputChat> {
                             width: 1,
                           ),
                           borderRadius: BorderRadius.circular(30),
+                        ),
+                        suffixIcon: IconButton(
+                          onPressed: _sendMessageController.clear,
+                          icon: Icon(Icons.clear),
                         ),
                       ),
                       cursorColor: Colors.indigoAccent,
@@ -115,17 +121,6 @@ class _InputChat extends State<InputChat> {
                     ),
                   )
                 ]),
-                //  GestureDetector(
-                //     onTapDown: (_) => _startListening(),
-                //     onTapUp: (_) => _stopListening(),
-                //     child: InkWell(
-                //       child: Icon(
-                //         Icons.mic,
-                //         color: Colors.indigoAccent,
-                //         size: 60,
-                //       ),
-                //     ),
-                //   ),
                 const SizedBox(
                   height: 10,
                 ),
@@ -134,10 +129,15 @@ class _InputChat extends State<InputChat> {
                   width: 60.0,
                   buttonBackgroundColor: Color(0xFF373A49),
                   glowColor: Color(0xFF777AF9),
-                  icon: Icons.mic,
+                  icon:
+                      (state is StartListenState ? Icons.mic : Icons.mic_none),
                   iconColor: Colors.white,
                   onTap: () {
-                    // do something
+                    if (state is StartListenState) {
+                      _stopListening();
+                    } else {
+                      _startListening();
+                    }
                   },
                 ),
               ])),
