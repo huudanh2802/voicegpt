@@ -11,6 +11,14 @@ abstract class ChatState extends Equatable {
 
 class ChatInitial extends ChatState {}
 
+class LoadHistoryState extends ChatState {
+  final List<TextChat> localHistory;
+  const LoadHistoryState(this.localHistory);
+
+  @override
+  List<Object> get props => [localHistory];
+}
+
 class ReceiveUserInput extends ChatState {
   final String userMessage;
 

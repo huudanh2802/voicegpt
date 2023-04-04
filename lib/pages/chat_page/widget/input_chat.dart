@@ -23,7 +23,14 @@ class _InputChat extends State<InputChat> {
   /// This has to happen only once per app
   void _initSpeech() async {
     if (_chatBloc.state.speechOn == false) {
-      _speechEnabled = await _speechToText.initialize();
+      _speechEnabled = await _speechToText.initialize(onStatus: (status) {
+        if (status == "done") {
+          _stopListening();
+        }
+      }, onError: (error) {
+        print(error);
+        _stopListening();
+      });
     } else {
       _chatBloc.add(SpeechOnEvent());
     }
@@ -41,12 +48,11 @@ class _InputChat extends State<InputChat> {
 
   void _stopListening() {
     _chatBloc.add(StopListeningEvent());
-    _speechToText.cancel();
+    _speechToText.stop();
   }
 
   void _onSpeechResult(SpeechRecognitionResult result) {
     _chatBloc.add(ListeningEvent(result.recognizedWords));
-    if (_speechToText.isNotListening) _stopListening();
   }
 
   @override

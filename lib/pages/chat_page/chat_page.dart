@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hive/hive.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:voicegpt/model/text_chat.dart';
-import 'package:voicegpt/ui/screen/chat_page/widget/chat_bubble.dart';
-import 'package:voicegpt/ui/screen/chat_page/widget/input_chat.dart';
+import 'package:voicegpt/pages/chat_page/widget/chat_bubble.dart';
+import 'package:voicegpt/pages/chat_page/widget/input_chat.dart';
 
 import 'bloc/chat_bloc.dart';
 
@@ -16,16 +17,18 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPage extends State<ChatPage> {
-  List<TextChat> _chatList = [];
+  final List<TextChat> _chatList = [];
 
   late ChatBloc _chatBloc;
   late FlutterTts flutterTts;
+  final Box voiceGptBox = Hive.box('voicegpt');
 
   @override
   void initState() {
     super.initState();
     _chatBloc = BlocProvider.of(context);
     flutterTts = FlutterTts();
+    _chatBloc.add(LoadHistoryEvent());
   }
 
   @override
@@ -83,6 +86,11 @@ class _ChatPage extends State<ChatPage> {
                       elevation: 0,
                     ));
                     _chatList.removeLast();
+                  } else if (state is LoadHistoryState) {
+                    _chatBloc.historyLocal.forEach((element) {
+                      print(element);
+                      _chatList.insert(0, element);
+                    });
                   }
                 },
                 builder: (context, state) {
