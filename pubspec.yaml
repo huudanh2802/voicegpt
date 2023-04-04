@@ -52,6 +52,8 @@ dependencies:
   quiver: ^3.2.1
   path_provider: ^2.0.14
   hive_flutter: ^1.1.0
+  settings_ui: ^2.0.2
+  language_picker: ^0.4.3
 
 
 
