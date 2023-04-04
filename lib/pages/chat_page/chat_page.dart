@@ -9,6 +9,7 @@ import 'package:voicegpt/model/text_chat.dart';
 import 'package:voicegpt/pages/chat_page/widget/chat_bubble.dart';
 import 'package:voicegpt/pages/chat_page/widget/input_chat.dart';
 
+import '../../router/router.dart';
 import 'bloc/chat_bloc.dart';
 
 class ChatPage extends StatefulWidget {
@@ -60,7 +61,9 @@ class _ChatPage extends State<ChatPage> {
                 Icons.settings,
                 color: Colors.black,
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, MyRouter.settingRoute);
+              },
             ),
           ],
           elevation: 0,

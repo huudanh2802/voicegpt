@@ -4,6 +4,8 @@ import 'package:language_picker/languages.dart';
 import 'package:language_picker/languages.g.dart';
 import 'package:settings_ui/settings_ui.dart';
 
+import '../../router/router.dart';
+
 class SettingPage extends StatefulWidget {
   @override
   State<SettingPage> createState() => _SettingPage();

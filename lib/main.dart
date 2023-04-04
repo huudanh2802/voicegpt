@@ -10,6 +10,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:voicegpt/pages/chat_page/bloc/chat_bloc.dart';
 import 'package:voicegpt/pages/chat_page/chat_page.dart';
 import 'package:voicegpt/pages/setting_page/setting_page.dart';
+import 'package:voicegpt/router/router.dart';
 
 import 'model/text_chat.dart';
 
@@ -59,7 +60,9 @@ class _MyApp extends State<MyApp> {
           BlocProvider(create: (context) => ChatBloc(openAI)),
         ],
         child: MaterialApp(
-          home: SettingPage(),
+          debugShowCheckedModeBanner: false,
+          onGenerateRoute: MyRouter.generateRoute,
+          initialRoute: MyRouter.chatRoute,
         ));
   }
 }
