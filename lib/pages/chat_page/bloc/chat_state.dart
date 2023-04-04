@@ -71,3 +71,10 @@ class RespondSuccess extends ChatState {
   @override
   List<Object> get props => [respondMessage];
 }
+
+class RemoveHistoryState extends ChatState {
+  const RemoveHistoryState();
+
+  @override
+  List<Object> get props => [];
+}

@@ -9,6 +9,7 @@ import 'package:voicegpt/const/api_const.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:voicegpt/pages/chat_page/bloc/chat_bloc.dart';
 import 'package:voicegpt/pages/chat_page/chat_page.dart';
+import 'package:voicegpt/pages/setting_page/bloc/setting_bloc.dart';
 import 'package:voicegpt/pages/setting_page/setting_page.dart';
 import 'package:voicegpt/router/router.dart';
 
@@ -58,6 +59,10 @@ class _MyApp extends State<MyApp> {
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => ChatBloc(openAI)),
+          BlocProvider(
+            create: (context) => SettingBloc()..add(InitEvent()),
+            lazy: false,
+          )
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

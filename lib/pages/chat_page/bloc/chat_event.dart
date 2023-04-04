@@ -39,3 +39,7 @@ class ListeningEvent extends ChatEvent {
 class StopListeningEvent extends ChatEvent {
   const StopListeningEvent();
 }
+
+class RemoveHistoryEvent extends ChatEvent {
+  const RemoveHistoryEvent();
+}

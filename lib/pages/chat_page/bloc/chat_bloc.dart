@@ -76,5 +76,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       emit(StopListeningState());
       _speechOn = false;
     });
+    on<RemoveHistoryEvent>((event, emit) async {
+      await voiceGptBox.delete("chatHistory");
+      emit(RemoveHistoryState());
+    });
   }
 }

@@ -4,6 +4,7 @@ import 'package:holding_gesture/holding_gesture.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:breathing_collection/breathing_collection.dart';
+import 'package:voicegpt/pages/setting_page/bloc/setting_bloc.dart';
 
 import '../bloc/chat_bloc.dart';
 
@@ -14,6 +15,7 @@ class InputChat extends StatefulWidget {
 
 class _InputChat extends State<InputChat> {
   late ChatBloc _chatBloc;
+  late SettingBloc _settingBloc;
   final TextEditingController _sendMessageController = TextEditingController();
   final TextEditingController _hintMessageController = TextEditingController();
 
@@ -39,6 +41,7 @@ class _InputChat extends State<InputChat> {
   void _startListening() async {
     _chatBloc.add(StartListenEvent());
     await _speechToText.listen(
+        localeId: _settingBloc.isVN ? "vi_VN" : "en_US",
         onResult: _onSpeechResult,
         partialResults: true,
         listenFor: Duration(seconds: 100),
@@ -59,6 +62,7 @@ class _InputChat extends State<InputChat> {
   void initState() {
     super.initState();
     _chatBloc = BlocProvider.of(context);
+    _settingBloc = BlocProvider.of<SettingBloc>(context);
     _initSpeech();
   }
 

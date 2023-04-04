@@ -10,6 +10,7 @@ import 'package:voicegpt/pages/chat_page/widget/chat_bubble.dart';
 import 'package:voicegpt/pages/chat_page/widget/input_chat.dart';
 
 import '../../router/router.dart';
+import '../setting_page/bloc/setting_bloc.dart';
 import 'bloc/chat_bloc.dart';
 
 class ChatPage extends StatefulWidget {
@@ -21,6 +22,7 @@ class _ChatPage extends State<ChatPage> {
   final List<TextChat> _chatList = [];
 
   late ChatBloc _chatBloc;
+  late SettingBloc _settingBloc;
   late FlutterTts flutterTts;
   final Box voiceGptBox = Hive.box('voicegpt');
 
@@ -28,6 +30,7 @@ class _ChatPage extends State<ChatPage> {
   void initState() {
     super.initState();
     _chatBloc = BlocProvider.of(context);
+    _settingBloc = BlocProvider.of<SettingBloc>(context);
     flutterTts = FlutterTts();
     _chatBloc.add(LoadHistoryEvent());
   }
@@ -39,7 +42,11 @@ class _ChatPage extends State<ChatPage> {
   }
 
   textToSpeech(String botMessage) async {
-    await flutterTts.setLanguage("en-US");
+    if (!_settingBloc.isVN) {
+      await flutterTts.setLanguage("en-US");
+    } else {
+      await flutterTts.setLanguage("vi_VN");
+    }
 
     await flutterTts.setPitch(1);
     await flutterTts.speak(botMessage);
@@ -82,6 +89,10 @@ class _ChatPage extends State<ChatPage> {
                             content:
                                 state.respondMessage.choices[0].message.content,
                             isSender: false));
+                    if (_settingBloc.isAutoTTS) {
+                      textToSpeech(
+                          state.respondMessage.choices[0].message.content);
+                    }
                   } else if (state is ErrorRespondState) {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text(state.errorMessage),
@@ -91,9 +102,10 @@ class _ChatPage extends State<ChatPage> {
                     _chatList.removeLast();
                   } else if (state is LoadHistoryState) {
                     _chatBloc.historyLocal.forEach((element) {
-                      print(element);
                       _chatList.insert(0, element);
                     });
+                  } else if (state is RemoveHistoryState) {
+                    _chatList.clear();
                   }
                 },
                 builder: (context, state) {
