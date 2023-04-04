@@ -43,3 +43,21 @@ class StopListeningEvent extends ChatEvent {
 class RemoveHistoryEvent extends ChatEvent {
   const RemoveHistoryEvent();
 }
+
+class SpeakingEvent extends ChatEvent {
+  const SpeakingEvent();
+  @override
+  List<Object> get props => [];
+}
+
+class StopSpeakingEvent extends ChatEvent {
+  const StopSpeakingEvent();
+  @override
+  List<Object> get props => [];
+}
+
+class ChangeLanguageChatEvent extends ChatEvent {
+  const ChangeLanguageChatEvent();
+  @override
+  List<Object> get props => [];
+}

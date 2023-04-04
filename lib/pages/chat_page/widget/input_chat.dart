@@ -85,6 +85,7 @@ class _InputChat extends State<InputChat> {
             _sendMessageController.text = state.userMessage;
           } else if (state is StopListeningState) {
             _hintMessageController.clear();
+            _sendMessageWithText();
           }
         },
         builder: (context, state) => Align(

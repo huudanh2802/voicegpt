@@ -32,6 +32,15 @@ class _ChatPage extends State<ChatPage> {
     _chatBloc = BlocProvider.of(context);
     _settingBloc = BlocProvider.of<SettingBloc>(context);
     flutterTts = FlutterTts();
+    flutterTts.setStartHandler(() {
+      _chatBloc.add(SpeakingEvent());
+    });
+    flutterTts.setCompletionHandler(() {
+      _chatBloc.add(StopListeningEvent());
+    });
+    flutterTts.setCancelHandler(() {
+      _chatBloc.add(StopListeningEvent());
+    });
     _chatBloc.add(LoadHistoryEvent());
   }
 
@@ -50,6 +59,10 @@ class _ChatPage extends State<ChatPage> {
 
     await flutterTts.setPitch(1);
     await flutterTts.speak(botMessage);
+  }
+
+  stopTTS() async {
+    await flutterTts.stop();
   }
 
   @override
@@ -78,7 +91,7 @@ class _ChatPage extends State<ChatPage> {
         body: SafeArea(
             child: BlocConsumer<ChatBloc, ChatState>(
                 bloc: _chatBloc,
-                listener: (context, state) {
+                listener: (context, state) async {
                   if (state is ReceiveUserInput) {
                     _chatList.insert(0,
                         TextChat(content: state.userMessage, isSender: true));
@@ -106,6 +119,12 @@ class _ChatPage extends State<ChatPage> {
                     });
                   } else if (state is RemoveHistoryState) {
                     _chatList.clear();
+                  } else if (state is ChangeLanguageChatState) {
+                    if (!_settingBloc.isVN) {
+                      await flutterTts.setLanguage("en-US");
+                    } else {
+                      await flutterTts.setLanguage("vi_VN");
+                    }
                   }
                 },
                 builder: (context, state) {
@@ -121,6 +140,7 @@ class _ChatPage extends State<ChatPage> {
                             return ChatBubble(
                               textChat: _chatList[index],
                               onPlayButton: textToSpeech,
+                              onStopButton: stopTTS,
                             );
                           },
                         ),

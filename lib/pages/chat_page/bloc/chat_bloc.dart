@@ -15,6 +15,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final Box voiceGptBox = Hive.box('voicegpt');
   List<TextChat> historyLocal = [];
   ChatBloc(this.openAI) : super(ChatInitial()) {
+    on<SpeakingEvent>((event, emit) {
+      emit(SpeakingState());
+    });
+    on<StopSpeakingEvent>((event, emit) {
+      emit(StopSpeakingState());
+    });
     on<LoadHistoryEvent>((event, emit) async {
       var checkHistory = await voiceGptBox.get('chatHistory')?.cast<TextChat>();
       historyLocal = checkHistory ?? [];
@@ -78,7 +84,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     });
     on<RemoveHistoryEvent>((event, emit) async {
       await voiceGptBox.delete("chatHistory");
+      historyLocal = [];
       emit(RemoveHistoryState());
+    });
+    on<ChangeLanguageChatEvent>((event, emit) async {
+      emit(ChangeLanguageChatState());
     });
   }
 }

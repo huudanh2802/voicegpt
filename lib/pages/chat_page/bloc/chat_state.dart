@@ -78,3 +78,24 @@ class RemoveHistoryState extends ChatState {
   @override
   List<Object> get props => [];
 }
+
+class ChangeLanguageChatState extends ChatState {
+  const ChangeLanguageChatState();
+
+  @override
+  List<Object> get props => [];
+}
+
+class SpeakingState extends ChatState {
+  const SpeakingState();
+
+  @override
+  List<Object> get props => [];
+}
+
+class StopSpeakingState extends ChatState {
+  const StopSpeakingState();
+
+  @override
+  List<Object> get props => [];
+}
