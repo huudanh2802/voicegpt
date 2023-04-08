@@ -112,7 +112,7 @@ class _ChatPage extends State<ChatPage> {
                       backgroundColor: Colors.red,
                       elevation: 0,
                     ));
-                    _chatList.removeLast();
+                    _chatList.removeAt(0);
                   } else if (state is LoadHistoryState) {
                     _chatBloc.historyLocal.forEach((element) {
                       _chatList.insert(0, element);

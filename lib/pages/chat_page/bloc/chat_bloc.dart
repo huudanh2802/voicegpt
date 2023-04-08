@@ -46,7 +46,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
           final request = ChatCompleteText(
               model: kChatGptTurboModel,
-              maxToken: 3500,
+              maxToken: 1500,
               messages: historyToSend);
 
           final response = await openAI.onChatCompletion(request: request);
