@@ -99,12 +99,12 @@ class _ChatPage extends State<ChatPage> {
                     _chatList.insert(
                         0,
                         TextChat(
-                            content:
-                                state.respondMessage.choices[0].message.content,
+                            content: state
+                                .respondMessage.choices[0].message!.content,
                             isSender: false));
                     if (_settingBloc.isAutoTTS) {
                       textToSpeech(
-                          state.respondMessage.choices[0].message.content);
+                          state.respondMessage.choices[0].message!.content);
                     }
                   } else if (state is ErrorRespondState) {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

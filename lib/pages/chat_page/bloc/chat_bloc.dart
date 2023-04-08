@@ -45,7 +45,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           historyToSend.add({"role": "user", "content": event.requestMessage});
 
           final request = ChatCompleteText(
-              model: kChatGptTurboModel,
+              model: ChatModel.ChatGptTurboModel,
               maxToken: 1500,
               messages: historyToSend);
 
@@ -56,7 +56,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               isSender: true,
             ));
             historyLocal.add(TextChat(
-              content: response.choices[0].message.content,
+              content: response.choices[0].message!.content,
               isSender: false,
             ));
             await voiceGptBox.put('chatHistory', historyLocal);

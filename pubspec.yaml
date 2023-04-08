@@ -38,7 +38,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_bloc: ^8.1.2
   flutter_dotenv: ^5.0.2
-  chat_gpt_sdk: ^2.0.6
+  chat_gpt_sdk: ^2.0.8
   equatable: ^2.0.5
   speech_to_text: ^6.1.1
   holding_gesture: ^1.1.0
